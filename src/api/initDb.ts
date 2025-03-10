@@ -13,6 +13,14 @@ async function initDb() {
     `);
 
     // Create the notes table
+
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS users (
+          user_name TEXT PRIMARY KEY,
+          password TEXT 
+        );
+      `
+    )
     await pool.query(`
       CREATE TABLE IF NOT EXISTS notes (
         id SERIAL PRIMARY KEY,
@@ -23,6 +31,8 @@ async function initDb() {
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
     `);
+
+
 
     console.log('Database initialized successfully');
   } catch (err) {

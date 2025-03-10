@@ -1,91 +1,102 @@
-// import { Button } from '@/components/button';
-import { Button } from "./components/ui/button"
-import { Sidebar } from "./components/sidebar"
-import { NoteCard } from "./components/note-card"
-import { Share, Plus } from "lucide-react"
+"use client"
 
-export default function Home() {
-  const notes = [
-    {
-      id: "1",
-      type: "Project Ideas",
-      title: "Future Projects",
-      content: (
-        <ul className="list-disc pl-5 space-y-2">
-          <li>Build a personal knowledge base</li>
-          <li>Create a habit tracker</li>
-          <li>Design a minimalist todo app</li>
-        </ul>
-      ),
-      tags: ["productivity", "ideas"],
-      date: "10/03/2024",
-    },
-    {
-      id: "2",
-      type: "How to Build a",
-      title: "Second Brain",
-      content: (
-        <div className="flex items-center justify-center h-28 bg-gray-100 rounded-md">
-          <div className="w-16 h-16 text-gray-300">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <rect width="18" height="18" x="3" y="3" rx="2" />
-              <path d="M3 9h18" />
-              <path d="M9 21V9" />
-            </svg>
-          </div>
-        </div>
-      ),
-      tags: ["productivity", "learning"],
-      date: "09/03/2024",
-    },
-    {
-      id: "3",
-      type: "Productivity Tip",
-      title: "",
-      content: (
-        <p className="text-gray-700">
-          The best way to learn is to build in public. Share your progress, get feedback, and help others along the way.
-        </p>
-      ),
-      tags: ["productivity", "learning"],
-      date: "08/03/2024",
-    },
-  ]
+import type React from "react"
+
+import { useState } from "react"
+import { Button } from "app/components/ui/button"
+import { Input } from "app/components/ui/input"
+import { Label } from "app/components/ui/label"
+import { Card, CardContent, CardFooter, CardHeader } from "app/components/ui/card"
+import Link from "next/link"
+
+export default function AuthPage() {
+  const [isLogin, setIsLogin] = useState(true)
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    console.log({ username, password, mode: isLogin ? "login" : "signup" })
+    // Add your authentication logic here
+  }
 
   return (
-    <div className="flex h-screen bg-gray-50">
-      <Sidebar />
-      <main className="flex-1 overflow-auto">
-        <div className="container mx-auto py-6 px-4 max-w-6xl">
-          <div className="flex items-center justify-between mb-8">
-            <h1 className="text-2xl font-bold">All Notes</h1>
-            <div className="flex gap-2">
-              <Button variant="outline" className="flex items-center gap-2">
-                <Share className="h-4 w-4" />
-                Share Brain
-              </Button>
-              <Button className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700">
-                <Plus className="h-4 w-4" />
-                Add Content
-              </Button>
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12">
+      <Card className="w-full max-w-md">
+        <CardHeader className="space-y-1 text-center p-6">
+          <div className="flex justify-center mb-4">
+            <div className="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center">
+              <div className="text-indigo-600">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="28"
+                  height="28"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M12 2a8 8 0 0 0-8 8v12l6.5-6.5a8 8 0 1 0 1.5-13.5Z" />
+                  <path d="M12 2a8 8 0 0 1 8 8v12l-6.5-6.5a8 8 0 0 1-1.5-13.5Z" />
+                </svg>
+              </div>
             </div>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {notes.map((note) => (
-              <NoteCard key={note.id} note={note} />
-            ))}
-          </div>
-        </div>
-      </main>
+          <h2 className="text-2xl font-bold">Second Brain</h2>
+          <p className="text-sm text-gray-500">
+            {isLogin ? "Login to access your second brain" : "Create your second brain account"}
+          </p>
+        </CardHeader>
+        <form onSubmit={handleSubmit}>
+          <CardContent className="space-y-4 p-6 pt-0">
+            <div className="space-y-2">
+              <Label htmlFor="username">Username</Label>
+              <Input
+                id="username"
+                placeholder="Enter your username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="password">Password</Label>
+                {isLogin && (
+                  <Link href="#" className="text-xs text-indigo-600 hover:underline">
+                    Forgot password?
+                  </Link>
+                )}
+              </div>
+              <Input
+                id="password"
+                type="password"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+          </CardContent>
+          <CardFooter className="flex flex-col space-y-4 p-6 pt-0">
+            <Button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700">
+              {isLogin ? "Login" : "Sign Up"}
+            </Button>
+            <div className="text-center text-sm">
+              {isLogin ? "Don't have an account? " : "Already have an account? "}
+              <button
+                type="button"
+                onClick={() => setIsLogin(!isLogin)}
+                className="text-indigo-600 hover:underline font-medium"
+              >
+                {isLogin ? "Sign Up" : "Login"}
+              </button>
+            </div>
+          </CardFooter>
+        </form>
+      </Card>
     </div>
   )
 }
