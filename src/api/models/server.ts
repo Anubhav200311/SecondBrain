@@ -8,6 +8,10 @@ const port: number = 3001;
 app.use(express.json());
 
 // Create a new note
+
+app.get('/' , (req , res) => {
+  res.json("Hello this is the backend")
+})
 app.post('/api/notes', async (req, res) => {
   const { type, link, title, tags } = req.body;
 
